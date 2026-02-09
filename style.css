@@ -1,0 +1,320 @@
+/* 1. 日本傳統貴族美學配色定義 */
+:root {
+    /* 這裡的數值會被 build_site.py 根據 Google Sheets 的 Settings 工作表自動替換 */
+    --main-accent: #1A252F;  
+    --bg-gold: #FFF9EB;     
+    --accent-gold: #B8860B; 
+    --gray-text: #605A52;   
+    --card-bg: #FFFFFF;     
+    --text-color: #2C3E50;  
+    --border-color: rgba(184, 134, 11, 0.2);
+}
+
+/* 深色模式：保持原本結構，腳本主要替換上面的 :root */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-gold: #1C1F1D;    
+        --main-accent: #D4AF37; 
+        --gray-text: #A68A64;  
+        --card-bg: #262A27;    
+        --text-color: #E9E4D4; 
+        --border-color: rgba(212, 175, 55, 0.3);
+    }
+}
+
+body {
+    font-family: "Noto Sans TC", serif;
+    background-color: var(--bg-gold);
+    color: var(--text-color);
+    margin: 0; padding: 15px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    /* 允許 PWA 的 pull to refresh 功能 */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 2. 密碼驗證層 */
+#password-gate {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg-gold); z-index: 9999; display: flex;
+    align-items: center; justify-content: center; flex-direction: column;
+}
+
+.login-box {
+    background: var(--card-bg); padding: 40px; border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1); text-align: center; max-width: 320px; width: 90%;
+    border: 1px solid var(--accent-gold); box-sizing: border-box;
+}
+
+.login-box h2 { color: var(--main-accent); font-weight: bold; }
+.login-box input {
+    width: 100%; padding: 12px; margin: 20px 0; border: 1px solid var(--accent-gold);
+    border-radius: 8px; background: rgba(255,255,255,0.5); color: var(--text-color); text-align: center;
+    box-sizing: border-box;
+}
+
+.login-btn { 
+    background: linear-gradient(135deg, var(--main-accent), #000); color: #fff; border: none; padding: 12px; 
+    border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; box-sizing: border-box;
+}
+
+/* 3. 主容器排版 */
+.container {
+    max-width: 600px; margin: 0 auto; background: var(--card-bg);
+    padding: 25px; border-radius: 12px; border-top: 10px solid var(--main-accent);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+}
+
+.main-header { text-align: center; margin-bottom: 25px; }
+.icon-header { width: 45px; height: 45px; fill: var(--main-accent); margin-bottom: 5px; }
+.icon-clipboard { width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 8px; fill: var(--main-accent); }
+h1 { color: var(--main-accent); margin: 0; font-size: 24px; letter-spacing: 2px; }
+.subtitle { font-size: 11px; color: var(--gray-text); letter-spacing: 3px; font-weight: bold; margin-top: 5px; }
+
+.date-display {
+    text-align: center; font-weight: bold; color: var(--main-accent);
+    margin-bottom: 15px; padding: 12px; border-radius: 8px;
+    background: rgba(26, 37, 47, 0.04); border: 1px solid var(--accent-gold);
+}
+
+/* 匯率與天氣資訊卡片 */
+.info-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.info-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--accent-gold);
+    background: var(--card-bg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    user-select: none;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(184, 134, 11, 0.15);
+}
+
+.info-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.info-icon {
+    font-size: 32px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.info-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.info-label {
+    font-size: 11px;
+    color: var(--gray-text);
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--main-accent);
+    margin-bottom: 2px;
+}
+
+.info-detail {
+    font-size: 11px;
+    color: var(--gray-text);
+}
+
+/* 手機版響應式 */
+@media (max-width: 480px) {
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .info-value {
+        font-size: 18px;
+    }
+}
+
+/* 4. 行前準備清單 */
+.checklist-section { 
+    margin-top: 10px; margin-bottom: 25px; padding: 20px; 
+    background: rgba(184, 134, 11, 0.04); border-radius: 12px; border: 1px solid var(--accent-gold); 
+}
+
+.checklist-title { 
+    font-size: 18px; font-weight: bold; margin-bottom: 15px; 
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--main-accent);
+}
+
+.checklist-cat {
+    font-size: 14px; color: var(--main-accent); font-weight: bold;
+    margin: 15px 0 8px 0; border-left: 4px solid var(--main-accent); padding-left: 10px;
+}
+
+.chk-btn { 
+    background: transparent; border: 1px solid var(--main-accent); 
+    padding: 5px 12px; border-radius: 6px; color: var(--main-accent); cursor: pointer; 
+}
+
+.item { display: flex; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid rgba(184, 134, 11, 0.1); }
+.item input[type="checkbox"] { 
+    width: 22px; height: 22px; margin-right: 12px; margin-top: 2px; 
+    accent-color: var(--main-accent); flex-shrink: 0; 
+}
+
+.item label { font-size: 16px; color: var(--text-color); cursor: pointer; }
+.item.completed label { text-decoration: line-through; color: var(--gray-text); opacity: 0.5; }
+.label-note { display: block; font-size: 12px; color: var(--gray-text); margin-top: 3px; }
+
+/* 5. 修復版呼吸燈動畫 (不再彈跳) */
+@keyframes steadyBreath {
+    0% { background-color: rgba(184, 134, 11, 0.05); box-shadow: inset 0 0 0 rgba(184, 134, 11, 0); }
+    50% { background-color: rgba(184, 134, 11, 0.12); box-shadow: inset 0 0 10px rgba(184, 134, 11, 0.2); }
+    100% { background-color: rgba(184, 134, 11, 0.05); box-shadow: inset 0 0 0 rgba(184, 134, 11, 0); }
+}
+
+/* 預設的 li 樣式，先預留邊框空間防止彈跳 */
+.schedule-box li {
+    padding: 12px;
+    margin: 5px 0;
+    border-left: 6px solid transparent;
+    transition: border-color 0.4s, background-color 0.3s;
+    list-style: none;
+}
+
+/* 當前項目的呼吸效果 */
+.schedule-box li.current-activity { 
+    animation: steadyBreath 5s infinite ease-in-out; 
+    border-left: 6px solid var(--accent-gold); /* 靜態邊框，不參與動畫 */
+    border-radius: 15px;
+    position: relative; 
+}
+
+.schedule-box li.current-activity::after { 
+    content: "NOW"; position: absolute; right: 12px; top: 12px; 
+    background: var(--main-accent); color: #fff; 
+    font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 4px; 
+}
+
+/* 6. 行程表顯示 */
+.toggle-btn { 
+    background: linear-gradient(135deg, var(--main-accent), #000); color: #fff; border: none; 
+    padding: 15px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 25px; 
+}
+
+.schedule-box { 
+    border: 1px solid var(--accent-gold); border-radius: 12px; 
+    margin-bottom: 15px; padding: 15px 20px; display: none; background: var(--card-bg); 
+}
+
+.is-visible { display: block !important; }
+
+/* 今日行程：加深邊框標註 + 呼吸燈效果 */
+.today {
+    border-color: var(--accent-gold) !important;
+    border-width: 3px !important;
+    animation: todayBreath 4s infinite ease-in-out;
+    position: relative;
+}
+
+/* 今日行程的呼吸燈動畫 */
+@keyframes todayBreath {
+    0% {
+        box-shadow: 0 5px 20px rgba(184, 134, 11, 0.2),
+                    0 0 0 rgba(184, 134, 11, 0);
+    }
+    50% {
+        box-shadow: 0 8px 30px rgba(184, 134, 11, 0.35),
+                    0 0 20px rgba(184, 134, 11, 0.15);
+    }
+    100% {
+        box-shadow: 0 5px 20px rgba(184, 134, 11, 0.2),
+                    0 0 0 rgba(184, 134, 11, 0);
+    }
+}
+
+.day-info { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+.tag { padding: 4px 12px; border-radius: 5px; font-size: 11px; font-weight: bold; color: #fff; background: var(--gray-text); }
+.tag-today { background: var(--main-accent); }
+.date-text { color: var(--main-accent); font-weight: bold; font-size: 18px; }
+
+ul { padding: 0; margin: 0; }
+.time-label { font-weight: bold; color: var(--main-accent); margin-right: 10px; font-size: 16px; }
+b, strong { color: var(--main-accent); font-weight: bold; }
+
+a { color: var(--main-accent); text-decoration: underline; font-weight: bold; }
+
+.footer { 
+    text-align: center; margin-top: 50px; font-size: 12px; 
+    color: var(--gray-text); border-top: 1px solid var(--accent-gold); 
+    padding-top: 25px; letter-spacing: 2px; font-weight: bold;
+}
+
+/* 確保頁面允許下拉刷新手勢 - iOS PWA 優化 */
+html {
+    overscroll-behavior-y: none; /* 改為 none 以防止原生行為 */
+    min-height: 100.1vh; /* 稍微超過 100vh 以確保捲動感 */
+}
+
+body {
+    overscroll-behavior-y: none; /* 改為 none 以防止原生行為 */
+    -webkit-overflow-scrolling: touch;
+    transition: opacity 0.3s ease;
+}
+
+/* 下拉更新指示器 (由 JS 控制顯示) */
+.ptr-element {
+    position: fixed; /* 改為 fixed 以確保在 iOS 中正確定位 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    z-index: 2000;
+    color: var(--main-accent);
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    opacity: 0;
+    padding-top: 10px;
+    pointer-events: none; /* 防止干擾其他觸控事件 */
+    transform: translateY(-60px); /* 預設隱藏在上方 */
+}
+
+.ptr-element svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--main-accent);
+    transition: transform 0.2s;
+    
+}
+
+/* 正在刷新時的旋轉動畫 */
+.ptr-refreshing svg {
+    animation: rotatePtr 1s linear infinite;
+}
+
+@keyframes rotatePtr {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

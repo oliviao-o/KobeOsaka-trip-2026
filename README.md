@@ -1,1 +1,1 @@
-# malaysia-trip-2026
+# trip-template

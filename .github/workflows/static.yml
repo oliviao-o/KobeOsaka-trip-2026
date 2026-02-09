@@ -1,0 +1,58 @@
+name: Deploy Travel Web with Google Sheets
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+  # --- 新增排程執行功能 ---
+  schedule:
+    # 這裡使用的是 UTC 時間 (台灣時間 -8 小時)
+    # 範例：每天 UTC 00:00 (台灣 08:00) 與 UTC 12:00 (台灣 20:00) 執行
+    - cron: '0 0,12 * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install google-api-python-client pandas
+
+      - name: Build site from Google Sheets
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          DOC_ID: ${{ secrets.GOOGLE_SHEET_DOC_ID }}
+        run: |
+          python build_site.py
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

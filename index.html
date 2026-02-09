@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.svg?">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="malaysia-trip-2026">
+    <link rel="apple-touch-icon" href="pwa-icon-256x256.png" />
+    <link rel="manifest" href="manifest.json">
+    <title>{{PAGE_TITLE}}</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="password-gate">
+        <div class="login-box">
+            <h2 style="color: var(--main-red); margin: 0;">身分驗證</h2>
+            <p style="margin:8px 0 0 0; color: var(--gray-text); font-size: 14px;">輸入密碼以查看家族行程</p>
+            <input type="password" id="pw-input" placeholder="請輸入密碼" autofocus>
+            <button class="login-btn" id="login-btn">確認進入</button>
+            <div id="login-error" style="color: var(--main-red); margin-top: 10px; visibility: hidden;"></div>
+        </div>
+    </div>
+
+    <div id="main-content" class="container" style="display: none;">
+        <div class="main-header">
+            <svg class="icon-header" viewBox="0 0 24 24">
+                <path d="M19,20H17V11H7V20H5V9L12,5L19,9V20M8,12H16V14H8V12M8,15H16V17H8V15M16,18H8V20H16V18Z" />
+            </svg>
+            <h1>{{H1_TITLE}}</h1>
+            <div class="subtitle">{{SUBTITLE}}</div>
+        </div>
+
+        <div id="current-date" class="date-display">載入時鐘中...</div>
+
+        <!-- 匯率與天氣資訊 -->
+        <div class="info-cards">
+            <div class="info-card exchange-card">
+                <div class="info-icon">💱</div>
+                <div class="info-content">
+                    <div class="info-label">匯率</div>
+                    <div class="info-value" id="exchange-rate">載入中...</div>
+                    <div class="info-detail">1 {{EXCHANGE_FROM}} = ? {{EXCHANGE_TO}}</div>
+                </div>
+            </div>
+            <div class="info-card weather-card">
+                <div class="info-icon" id="weather-icon">🌤️</div>
+                <div class="info-content">
+                    <div class="info-label">{{WEATHER_CITY}} 天氣</div>
+                    <div class="info-value" id="weather-temp">載入中...</div>
+                    <div class="info-detail" id="weather-desc">--</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dynamic-checklist" class="checklist-section">
+            <div class="checklist-title">
+                <span class="checklist-heading"><svg class="icon-clipboard" viewBox="0 0 24 24" aria-hidden="true"
+                        focusable="false">
+                        <path
+                            d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z" />
+                    </svg>行前準備清單</span>
+                <div class="chk-controls"><button class="chk-btn" onclick="toggleChecklist()"><span
+                            id="chevron">▼</span></button></div>
+            </div>
+            <div id="checklist-content">
+                {{CHECKLIST_CONTENT}}
+            </div>
+        </div>
+
+        <button id="toggleBtn" class="toggle-btn">查看完整行程表</button>
+
+        <div id="schedule-container">
+            {{SCHEDULE_CONTENT}}
+        </div>
+
+        <div class="footer">{{FOOTER}}</div>
+    </div>
+
+    <!-- 從 Google Sheets 載入的設定 -->
+    <script>
+        window.WEATHER_CITY = '{{WEATHER_CITY}}';
+        window.EXCHANGE_FROM = '{{EXCHANGE_FROM}}';
+        window.EXCHANGE_TO = '{{EXCHANGE_TO}}';
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
