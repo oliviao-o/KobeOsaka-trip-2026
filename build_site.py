@@ -125,8 +125,8 @@ def main():
     # --- 3. 處理顏色設定與功能設定 (Settings Tab) ---
     print("🎨 Fetching Settings...")
     # 設定預設值
-    weather_city = 'Kuala Lumpur'  # 預設值
-    exchange_from = 'MYR'  # 預設值
+    weather_city = 'KOBE'  # 預設值
+    exchange_from = 'JYP'  # 預設值
     exchange_to = 'TWD'  # 預設值
 
     try:

@@ -211,7 +211,7 @@ function toggleChecklist() {
 async function fetchExchangeRate() {
     try {
         // 使用配置的匯率基準貨幣
-        const from = window.EXCHANGE_FROM || 'MYR';
+        const from = window.EXCHANGE_FROM || 'JPY';
         const to = window.EXCHANGE_TO || 'TWD';
 
         const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${from}`);
